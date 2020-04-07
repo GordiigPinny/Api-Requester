@@ -19,7 +19,7 @@ class BaseApiRequester:
 
     def __init__(self):
         self.host = 'http://127.0.0.1:8000/'
-        self.api_url = self.host + 'api/'
+        self.api_url = self.host + '/api/'
         self.token_prefix = 'Bearer'
 
     def _validate_return_code(self, response: requests.Response, expected_code: int, throw: bool = True) -> bool:

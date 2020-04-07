@@ -3,7 +3,7 @@ Submodule for all microservices
 
 To add submodule to project:
 ```shell script
-$ git submodule add https://github.com/GordiigPinny/Api-Requester.git
+$ git submodule add https://github.com/GordiigPinny/ApiRequesters.git
 ```
 
 For include this submodule you need package dotenv and requests:

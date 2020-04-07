@@ -37,7 +37,8 @@ class BaseApiRequester:
                 return False
         return True
 
-    def _get_json_from_response(self, response: requests.Response, throw: bool = True) -> Union[Dict, List, str]:
+    @staticmethod
+    def get_json_from_response(response: requests.Response, throw: bool = True) -> Union[Dict, List, str]:
         """
         Получение джсона из ответа
         @param response: Объект-ответ сервера

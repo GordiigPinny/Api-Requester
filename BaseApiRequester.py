@@ -21,6 +21,7 @@ class BaseApiRequester:
         self.host = 'http://127.0.0.1:8000/'
         self.api_url = self.host + '/api/'
         self.token_prefix = 'Bearer'
+        self.deleted_qparam = 'with_deleted'
 
     def _validate_return_code(self, response: requests.Response, expected_code: int, throw: bool = True) -> bool:
         """

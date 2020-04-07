@@ -19,7 +19,7 @@ class BaseApiRequester:
 
     def __init__(self):
         self.host = 'http://127.0.0.1:8000/'
-        self.api_url = self.host + 'api/'
+        self.api_url = self.host + '/api/'
         self.token_prefix = 'Bearer'
 
     def _validate_return_code(self, response: requests.Response, expected_code: int, throw: bool = True) -> bool:
@@ -37,7 +37,8 @@ class BaseApiRequester:
                 return False
         return True
 
-    def _get_json_from_response(self, response: requests.Response, throw: bool = True) -> Union[Dict, List, str]:
+    @staticmethod
+    def get_json_from_response(response: requests.Response, throw: bool = True) -> Union[Dict, List, str]:
         """
         Получение джсона из ответа
         @param response: Объект-ответ сервера
@@ -56,9 +57,18 @@ class BaseApiRequester:
         """
         Возврат кортежа-хэдера авторизации
         @param token: Токен
-        @return: Кортеж вида ('Authorization': <token>)
+        @return: Кортеж вида ('Authorization': '<token_prefix> <token>')
         """
         return 'Authorization', f'{self.token_prefix} {token}'
+
+    def _create_auth_header_dict(self, token: str) -> Dict[str, str]:
+        """
+        Возврат словаря с одним ключом Authorization
+        @param token: Токен
+        @return: Словарь вида {'Authorization': '<token_prefix> <token>'}
+        """
+        auth_tuple = self._create_auth_header_tuple(token)
+        return {auth_tuple[0]: auth_tuple[1]}
 
     def _make_request(self, method: Callable, uri, headers, params, data) -> requests.Response:
         """

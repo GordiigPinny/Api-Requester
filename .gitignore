@@ -137,4 +137,4 @@ dmypy.json
 
 # Specific files
 settings_local.py
-debug.env
+#debug.env

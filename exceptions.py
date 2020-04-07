@@ -8,6 +8,9 @@ class BaseApiRequestError(Exception):
     def __init__(self, message: str = 'BaseApiRequestError was raised'):
         self.message = message
 
+    def __str__(self):
+        return self.message
+
 
 class RequestError(BaseApiRequestError):
     def __init__(self, message: str = 'Request error'):
@@ -23,9 +26,11 @@ class UnexpectedResponse(BaseApiRequestError):
             self.body = response.json()
         except ValueError:
             self.body = response.text
+        self.message += f' status code = {self.code}, response body = {self.body}'
 
 
 class JsonDecodeError(BaseApiRequestError):
     def __init__(self, body_text: str, message: str = 'Couldn\'t decode response\'s body as json'):
         super().__init__(message=message)
         self.body_text = body_text
+        self.message += f' {self.body_text}'

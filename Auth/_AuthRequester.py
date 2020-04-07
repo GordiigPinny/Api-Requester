@@ -2,8 +2,8 @@ import requests
 from enum import Enum
 from typing import Tuple
 from django.conf import settings
-from ApiRequesters.BaseApiRequester import BaseApiRequester
-from ApiRequesters.exceptions import JsonDecodeError, UnexpectedResponse, RequestError
+from ..BaseApiRequester import BaseApiRequester
+from ..exceptions import JsonDecodeError, UnexpectedResponse, RequestError
 
 
 class AuthRequester(BaseApiRequester):
@@ -24,7 +24,7 @@ class AuthRequester(BaseApiRequester):
         auth_header = {auth_tuple[0]: auth_tuple[1]}
         response = self.get('user_info/', headers=auth_header)
         self._validate_return_code(response, 200)
-        user_json = self._get_json_from_response(response)
+        user_json = self.get_json_from_response(response)
         return response, user_json
 
     def is_moderator(self, token: str) -> Tuple[requests.Response, bool]:

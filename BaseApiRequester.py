@@ -162,3 +162,60 @@ class BaseApiRequester:
         @return: Ответ внешнего сервиса
         """
         return self.make_request(self.METHODS.DELETE, path_suffix=path_suffix, headers=headers, data=data, params=params)
+
+    def _base_get(self, token: str, path_suffix: str, params: Dict[str, Any]) -> \
+            Tuple[requests.Response, Union[List[Dict[str, Any]], Dict[str, Any]]]:
+        """
+        Базовый метод для получения списка сущностей, в том числе пагинированного и одной сущности
+        @param token: Токен
+        @param path_suffix: Суффикс, добавляемый к апи-урлу
+        @param params: Кьюери-параметры
+        @return: Ответ внешнего сервиса, и джсон-ответ
+        """
+        headers = self._create_auth_header_dict(token)
+        response = self.get(path_suffix=path_suffix, headers=headers, params=params)
+        self._validate_return_code(response, 200)
+        res_json = self.get_json_from_response(response)
+        return response, res_json
+
+    def _base_post(self, token: str, path_suffix: str, data: Dict[str, Any]) -> Tuple[
+        requests.Response, Dict[str, Any]]:
+        """
+        Базовый метод для добавления сущностей
+        @param token: Токен
+        @param path_suffix: Суффикс, добавляемый к апи-урлу
+        @param data: Боди запроса
+        @return: Ответ внешнего сервиса, и джсон-ответ
+        """
+        headers = self._create_auth_header_dict(token)
+        response = self.post(path_suffix=path_suffix, headers=headers, data=data)
+        self._validate_return_code(response, 201)
+        res_json = self.get_json_from_response(response)
+        return response, res_json
+
+    def _base_patch(self, token: str, path_suffix: str, data: Dict[str, Any]) -> Tuple[
+        requests.Response, Dict[str, Any]]:
+        """
+        Базовый метод для изменения сущностей
+        @param token: Токен
+        @param path_suffix: Суффикс, добавляемый к апи-урлу
+        @param data: Боди запроса
+        @return: Ответ внешнего сервиса, и джсон-ответ
+        """
+        headers = self._create_auth_header_dict(token)
+        response = self.patch(path_suffix=path_suffix, headers=headers, data=data)
+        self._validate_return_code(response, 202)
+        res_json = self.get_json_from_response(response)
+        return response, res_json
+
+    def _base_delete(self, token: str, path_suffix: str) -> requests.Response:
+        """
+        Базовый метод для удаления сущностей
+        @param token: Токен
+        @param path_suffix: Суффикс, добавляемый к апи-урлу
+        @return: Ответ внешнего сервиса, и джсон-ответ
+        """
+        headers = self._create_auth_header_dict(token)
+        response = self.delete(path_suffix=path_suffix, headers=headers)
+        self._validate_return_code(response, 204)
+        return response

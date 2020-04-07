@@ -1,5 +1,4 @@
 import requests
-import json
 from typing import Tuple, List, Dict, Any, Union
 from enum import Enum
 from django.conf import settings
@@ -62,7 +61,7 @@ class UsersRequester(BaseApiRequester):
         """
         headers = self._create_auth_header_dict(token)
         data = {'user_id': user_id, 'profile_pic_link': profile_pic_link}
-        response = self.post(path_suffix='profiles/', headers=headers, data=json.dumps(data))
+        response = self.post(path_suffix='profiles/', headers=headers, data=data)
         self._validate_return_code(response, 201)
         user_json = self.get_json_from_response(response)
         return response, user_json
@@ -74,7 +73,7 @@ class UsersRequester(BaseApiRequester):
         """
         headers = self._create_auth_header_dict(token)
         data = {'award_type': award_type.value, 'award_id': award_id}
-        response = self.post(path_suffix=f'profiles/{user_id}/add_awards/', headers=headers, data=json.dumps(data))
+        response = self.post(path_suffix=f'profiles/{user_id}/add_awards/', headers=headers, data=data)
         self._validate_return_code(response, 201)
         user_json = self.get_json_from_response(response)
         return response, user_json
@@ -91,7 +90,7 @@ class UsersRequester(BaseApiRequester):
             data['geopin_sprite'] = geopin_sprite
         if pin_sprite:
             data['pin_sprite'] = pin_sprite
-        response = self.patch(path_suffix=f'profiles/{user_id}/', headers=headers, data=json.dumps(data))
+        response = self.patch(path_suffix=f'profiles/{user_id}/', headers=headers, data=data)
         self._validate_return_code(response, 202)
         user_json = self.get_json_from_response(response)
         return response, user_json

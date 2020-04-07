@@ -2,8 +2,8 @@ import requests
 from enum import Enum
 from typing import Tuple
 from django.conf import settings
-from ApiRequesters.BaseApiRequester import BaseApiRequester
-from ApiRequesters.exceptions import JsonDecodeError, UnexpectedResponse, RequestError
+from ..BaseApiRequester import BaseApiRequester
+from ..exceptions import JsonDecodeError, UnexpectedResponse, RequestError
 
 
 class AuthRequester(BaseApiRequester):

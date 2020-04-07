@@ -1,7 +1,7 @@
 import requests
 from enum import Enum
 from typing import Dict, Any, Union, Callable, List, Tuple
-from ApiRequesters.exceptions import RequestError, UnexpectedResponse, JsonDecodeError
+from .exceptions import RequestError, UnexpectedResponse, JsonDecodeError
 
 
 class BaseApiRequester:

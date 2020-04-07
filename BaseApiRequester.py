@@ -56,9 +56,18 @@ class BaseApiRequester:
         """
         Возврат кортежа-хэдера авторизации
         @param token: Токен
-        @return: Кортеж вида ('Authorization': <token>)
+        @return: Кортеж вида ('Authorization': '<token_prefix> <token>')
         """
         return 'Authorization', f'{self.token_prefix} {token}'
+
+    def _create_auth_header_dict(self, token: str) -> Dict[str, str]:
+        """
+        Возврат словаря с одним ключом Authorization
+        @param token: Токен
+        @return: Словарь вида {'Authorization': '<token_prefix> <token>'}
+        """
+        auth_tuple = self._create_auth_header_tuple(token)
+        return {auth_tuple[0]: auth_tuple[1]}
 
     def _make_request(self, method: Callable, uri, headers, params, data) -> requests.Response:
         """

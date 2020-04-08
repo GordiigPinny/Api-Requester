@@ -9,7 +9,7 @@ class MockAuthRequester(AuthRequester, MockRequesterMixin):
     Мок-класс для тестов
     """
     # MARK: - Mock overrides
-    def get_object_on_success(self, token=''):
+    def get_object_on_success(self, token=None):
         token = self.get_role_part(token)
         return {
             'id': 1,
@@ -32,16 +32,13 @@ class MockAuthRequester(AuthRequester, MockRequesterMixin):
         return self._mock_token_handler(token)
 
     def is_moderator(self, token: str) -> Tuple[requests.Response, bool]:
-        token = self.get_role_part(token)
         self._handle_errors(token)
-        return requests.Response(), token in (self.ROLES.MODERATOR.value, self.ROLES.SUPERUSER.value)
+        return requests.Response(), self.get_role_part(token) in (self.ROLES.MODERATOR.value, self.ROLES.SUPERUSER.value)
 
     def is_superuser(self, token: str) -> Tuple[requests.Response, bool]:
-        token = self.get_role_part(token)
         self._handle_errors(token)
-        return requests.Response(), token == self.ROLES.SUPERUSER.value
+        return requests.Response(), self.get_role_part(token) == self.ROLES.SUPERUSER.value
 
     def is_token_valid(self, token: str) -> Tuple[requests.Response, bool]:
-        token = self.get_role_part(token)
         self._handle_errors(token)
-        return requests.Response(), token in self.get_all_registered_roles_tuple()
+        return requests.Response(), self.get_role_part(token) in self.get_all_registered_roles_tuple()

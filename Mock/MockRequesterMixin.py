@@ -65,11 +65,11 @@ class MockRequesterMixin:
         raise NotImplementedError
 
     # Этот метод оверрайдить во всех классах-моках для отправки джосн-ответа
-    def get_object_on_success(self, token=''):
+    def get_object_on_success(self, token=None):
         raise NotImplementedError
 
     # Этот оверрайдить, если дсоны на GET/POST отличаются
-    def get_create_object_on_success(self, token=''):
+    def get_create_object_on_success(self, token=None):
         return self.get_object_on_success()
 
     def get_coded_response(self, code: int) -> requests.Response:

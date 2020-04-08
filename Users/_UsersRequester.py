@@ -48,12 +48,12 @@ class UsersRequester(BaseApiRequester):
         data = {'user_id': user_id, 'profile_pic_link': profile_pic_link}
         return self._base_post(path_suffix='profiles/', token=token, data=data)
 
-    def add_award_to_user(self, user_id: str, award_type: AWARD_TYPE, award_id: int, token: str) -> \
+    def add_award_to_user(self, user_id: str, award_type: AWARD_TYPE, award_ids: List[int], token: str) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Добавление ачивки юзеру
         """
-        data = {'award_type': award_type.value, 'award_id': award_id}
+        data = {'award_type': award_type.value, 'award_ids': award_ids}
         return self._base_post(path_suffix=f'profiles/{user_id}/add_awards/', token=token, data=data)
 
     def change_user(self, user_id: int, token: str, pin_sprite: Union[int, None] = None,

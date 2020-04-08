@@ -61,7 +61,7 @@ class MockPlacesRequester(PlacesRequester, MockRequesterMixin):
         else:
             raise ValueError('place_model_type must be one of: (place, accept, rating, place_image)')
 
-    def get_create_object_on_success(self, token=None):
+    def get_list_object_on_success(self, token=None):
         place_model_type = self.get_token_dict(token)['place_model_type']
         if place_model_type == 'place':
             return {
@@ -108,7 +108,7 @@ class MockPlacesRequester(PlacesRequester, MockRequesterMixin):
         """
         Создание изображения места
         """
-        return self._mock_token_handler(token, created_object=True)
+        return self._mock_token_handler(token, list_object=True)
 
     def change_place_image(self, place_image_id: int, place_id: int, created_by: int, pic_link: str, token: str) -> \
             Tuple[requests.Response, Dict[str, Any]]:
@@ -151,7 +151,7 @@ class MockPlacesRequester(PlacesRequester, MockRequesterMixin):
         """
         Создание рейтинга
         """
-        return self._mock_token_handler(token, created_object=True)
+        return self._mock_token_handler(token, list_object=True)
 
     def delete_rating(self, rating_id: int, token: str) -> requests.Response:
         """
@@ -186,7 +186,7 @@ class MockPlacesRequester(PlacesRequester, MockRequesterMixin):
         """
         Создание подтверждения
         """
-        return self._mock_token_handler(token, created_object=True)
+        return self._mock_token_handler(token, list_object=True)
 
     def delete_acceptance(self, acceptance_id: int, token: str) -> requests.Response:
         """
@@ -227,7 +227,7 @@ class MockPlacesRequester(PlacesRequester, MockRequesterMixin):
         """
         Создание места
         """
-        return self._mock_token_handler(token, created_object=True)
+        return self._mock_token_handler(token, list_object=True)
 
     def change_place(self, place_id: int, name: str, address: str, lat: float, long: float, token: str) -> \
             Tuple[requests.Response, Dict[str, Any]]:

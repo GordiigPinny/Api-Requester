@@ -37,7 +37,7 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
         else:
             raise ValueError('award_type must be pin or achievement')
 
-    def get_create_object_on_success(self, token=None):
+    def get_list_object_on_success(self, token=None):
         award_type = self.get_token_dict(token)['award_type']
         if award_type == 'pin':
             return {
@@ -85,7 +85,7 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
         """
         Создание ачивки
         """
-        return self._mock_token_handler(token, created_object=True)
+        return self._mock_token_handler(token, list_object=True)
 
     def change_achievement(self, achievement_id: int, token: str, name: Union[str, None] = None,
                            descr: Union[str, None] = None, pic_link: Union[str, None] = None) -> \
@@ -130,7 +130,7 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
         """
         Создание пина
         """
-        return self._mock_token_handler(token, created_object=True)
+        return self._mock_token_handler(token, list_object=True)
 
     def change_pin(self, pin_id: int, token: str, name: Union[str, None] = None, price: Union[int, None] = None,
                    descr: Union[str, None] = None, pic_link: Union[str, None] = None) -> \

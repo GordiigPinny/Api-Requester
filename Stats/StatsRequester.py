@@ -13,5 +13,3 @@ try:
         StatsRequester = __s if __ar else __m
 except AttributeError:
     StatsRequester = __s if not __tst else __m
-
-

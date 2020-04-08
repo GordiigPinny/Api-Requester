@@ -69,7 +69,7 @@ class MockRequesterMixin:
         raise NotImplementedError
 
     # Этот оверрайдить, если дсоны на GET/POST отличаются
-    def get_create_object_on_success(self, token=None):
+    def get_list_object_on_success(self, token=None):
         return self.get_object_on_success()
 
     def get_coded_response(self, code: int) -> requests.Response:
@@ -97,12 +97,12 @@ class MockRequesterMixin:
         elif token == self.ERRORS.BAD_CODE_404_TOKEN.value:
             self.raise_coded_error(404)
 
-    def _mock_token_handler(self, token: str, created_object=False):
+    def _mock_token_handler(self, token: str, list_object=False):
         """
         Базовый метод обработки моковых токенов
         """
         self._handle_errors(token)
-        if created_object:
-            return requests.Response(), self.get_create_object_on_success(token)
+        if list_object:
+            return requests.Response(), self.get_list_object_on_success(token)
         else:
             return requests.Response(), self.get_object_on_success(token)

@@ -95,7 +95,7 @@ class MockStatsRequester(StatsRequester, MockRequesterMixin):
         """
         Добавление статы по реквесту
         """
-        return self._mock_token_handler(token, created_object=True)
+        return self._mock_token_handler(token, list_object=True)
 
     # MARK: - Places stats
     def get_place_statistics_list(self, token: str, user_id: Optional[int], place_id: Optional[int]) -> \
@@ -125,7 +125,7 @@ class MockStatsRequester(StatsRequester, MockRequesterMixin):
         """
         Создание статы по месту
         """
-        return self._mock_token_handler(token, created_object=True)
+        return self._mock_token_handler(token, list_object=True)
 
     # MARK: - Accepts stats
     def get_accept_statistics_list(self, token: str, user_id: Optional[int], place_id: Optional[int]) -> \
@@ -155,7 +155,7 @@ class MockStatsRequester(StatsRequester, MockRequesterMixin):
         """
         Создание статы по подтверждению
         """
-        return self._mock_token_handler(token, created_object=True)
+        return self._mock_token_handler(token, list_object=True)
 
     # MARK: - Rating stats
     def get_rating_statistics_list(self, token: str, user_id: Optional[int], place_id: Optional[int]) -> \
@@ -185,7 +185,7 @@ class MockStatsRequester(StatsRequester, MockRequesterMixin):
         """
         Создание статы по рейтингу
         """
-        return self._mock_token_handler(token, created_object=True)
+        return self._mock_token_handler(token, list_object=True)
 
     # MARK: - Pin purchase stats
     def get_pin_purchase_statistics_list(self, token: str, user_id: Optional[int], pin_id: Optional[int]) -> \
@@ -214,7 +214,7 @@ class MockStatsRequester(StatsRequester, MockRequesterMixin):
         """
         Создание статы по оплате пинов
         """
-        return self._mock_token_handler(token, created_object=True)
+        return self._mock_token_handler(token, list_object=True)
 
     # MARK: - Achievement stats
     def get_achievement_statistics_list(self, token: str, user_id: Optional[int], achievement_id: Optional[int]) -> \
@@ -245,4 +245,4 @@ class MockStatsRequester(StatsRequester, MockRequesterMixin):
         """
         Создание статы по получению достижения
         """
-        return self._mock_token_handler(token, created_object=True)
+        return self._mock_token_handler(token, list_object=True)

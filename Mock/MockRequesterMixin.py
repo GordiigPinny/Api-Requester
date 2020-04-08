@@ -72,29 +72,30 @@ class MockRequesterMixin:
     def get_create_object_on_success(self, token=''):
         return self.get_object_on_success()
 
+    def get_coded_response(self, code: int) -> requests.Response:
+        resp = requests.Response()
+        resp.status_code = code
+        return resp
+
+    def raise_coded_error(self, code: int):
+        resp = self.get_coded_response(code)
+        raise UnexpectedResponse(resp)
+
     def _handle_errors(self, token):
         """
         Обработка ошибок, переданных в с токеном
         """
-        user_role, token = self.get_role_part(token), self.get_mine_error_part(token)
+        token = self.get_mine_error_part(token)
         if token == self.ERRORS.ERROR_TOKEN.value:
             raise BaseApiRequestError()
         elif token == self.ERRORS.BAD_CODE_400_TOKEN.value:
-            resp = requests.Response()
-            resp.status_code = 400
-            raise UnexpectedResponse(resp)
+            self.raise_coded_error(400)
         elif token == self.ERRORS.BAD_CODE_401_TOKEN.value:
-            resp = requests.Response()
-            resp.status_code = 401
-            raise UnexpectedResponse(resp)
+            self.raise_coded_error(401)
         elif token == self.ERRORS.BAD_CODE_403_TOKEN.value:
-            resp = requests.Response()
-            resp.status_code = 403
-            raise UnexpectedResponse(resp)
+            self.raise_coded_error(403)
         elif token == self.ERRORS.BAD_CODE_404_TOKEN.value:
-            resp = requests.Response()
-            resp.status_code = 404
-            raise UnexpectedResponse(resp)
+            self.raise_coded_error(404)
 
     def _mock_token_handler(self, token: str):
         """

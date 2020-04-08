@@ -1,5 +1,6 @@
 from django.conf import settings
-from ._AuthRequester import AuthRequester as __a, MockAuthRequester as __m
+from ._AuthRequester import AuthRequester as __a
+from ._MockAuthRequester import MockAuthRequester as __m
 
 __tst = settings.TESTING
 try:

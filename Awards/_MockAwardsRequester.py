@@ -63,7 +63,7 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
         """
         Получение списка ачивок
         """
-        resp, dictt = self._mock_token_handler(token)
+        resp, dictt = self._mock_token_handler(token, list_object=True)
         return resp, [dictt]
 
     def get_achievements_paginated(self, limit: int, offset: int, token: str, with_deleted: bool = False) -> \
@@ -107,7 +107,7 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
         """
         Получение пинов
         """
-        res, dictt = self._mock_token_handler(token)
+        res, dictt = self._mock_token_handler(token, list_object=True)
         return res, [dictt]
 
     def get_pins_paginated(self, limit: int, offset: int, token: str,

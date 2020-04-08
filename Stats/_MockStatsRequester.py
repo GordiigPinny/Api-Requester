@@ -73,7 +73,7 @@ class MockStatsRequester(StatsRequester, MockRequesterMixin):
         """
         Получение списка статы по реквестам
         """
-        resp, dictt = self._mock_token_handler(token)
+        resp, dictt = self._mock_token_handler(token, list_object=True)
         return resp, [dictt]
 
     def get_request_statistics_paginated(self, limit: int, offset: int, token: str, user_id: Optional[int] = None) -> \
@@ -103,7 +103,7 @@ class MockStatsRequester(StatsRequester, MockRequesterMixin):
         """
         Получение списка статы по метам
         """
-        resp, dictt = self._mock_token_handler(token)
+        resp, dictt = self._mock_token_handler(token, list_object=True)
         return resp, [dictt]
 
     def get_place_statistics_paginated(self, limit: int, offset: int, token: str, user_id: Optional[int],
@@ -133,7 +133,7 @@ class MockStatsRequester(StatsRequester, MockRequesterMixin):
         """
         Список статы по подтверждениям
         """
-        resp, dictt = self._mock_token_handler(token)
+        resp, dictt = self._mock_token_handler(token, list_object=True)
         return resp, [dictt]
 
     def get_accept_statistics_paginated(self, limit: int, offset: int, token: str, user_id: Optional[int],
@@ -163,7 +163,7 @@ class MockStatsRequester(StatsRequester, MockRequesterMixin):
         """
         Список статы по рейтингу
         """
-        resp, dictt = self._mock_token_handler(token)
+        resp, dictt = self._mock_token_handler(token, list_object=True)
         return resp, [dictt]
 
     def get_rating_statistics_paginated(self, limit: int, offset: int, token: str, user_id: Optional[int],
@@ -193,7 +193,7 @@ class MockStatsRequester(StatsRequester, MockRequesterMixin):
         """
         Список статы по оплате пинов
         """
-        resp, dictt = self._mock_token_handler(token)
+        resp, dictt = self._mock_token_handler(token, list_object=True)
         return resp, [dictt]
 
     def get_pin_purchase_statistics_paginated(self, limit: int, offset: int, token: str, user_id: Optional[int],
@@ -222,7 +222,7 @@ class MockStatsRequester(StatsRequester, MockRequesterMixin):
         """
         Список статы по получению достижения
         """
-        resp, dictt = self._mock_token_handler(token)
+        resp, dictt = self._mock_token_handler(token, list_object=True)
         return resp, [dictt]
 
     def get_achievement_statistics_paginated(self, limit: int, offset: int, token: str, user_id: Optional[int],

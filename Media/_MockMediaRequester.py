@@ -35,7 +35,8 @@ class MockMediaRequester(MediaRequester, MockRequesterMixin):
         """
         Получение инфы об изображениях определенного типа
         """
-        return self._mock_token_handler(token)
+        resp, dictt = self._mock_token_handler(token, list_object=True)
+        return resp, [dictt]
 
     def create_image(self, object_type: MediaRequester.IMAGE_OBJ_TYPES, object_id: int, created_by: int, file_data,
                      filename: str, token: str) -> Tuple[requests.Response, Dict[str, Any]]:

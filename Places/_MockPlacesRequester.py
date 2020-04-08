@@ -86,7 +86,7 @@ class MockPlacesRequester(PlacesRequester, MockRequesterMixin):
         """
         Получение списка картинок
         """
-        resp, dictt = self._mock_token_handler(token)
+        resp, dictt = self._mock_token_handler(token, list_object=True)
         return resp, [dictt]
 
     def get_place_images_paginated(self, limit: int, offset: int, token: str, place_id: Union[int, None] = None,
@@ -129,7 +129,7 @@ class MockPlacesRequester(PlacesRequester, MockRequesterMixin):
         """
         Получение списка рейтингов
         """
-        resp, dictt = self._mock_token_handler(token)
+        resp, dictt = self._mock_token_handler(token, list_object=True)
         return resp, [dictt]
 
     def get_ratings_paginated(self, limit: int, offset: int, token: str, place_id: Union[int, None] = None,
@@ -165,7 +165,7 @@ class MockPlacesRequester(PlacesRequester, MockRequesterMixin):
         """
         Получение списка подтверждений
         """
-        resp, dictt = self._mock_token_handler(token)
+        resp, dictt = self._mock_token_handler(token, list_object=True)
         return resp, [dictt]
 
     def get_accepts_paginated(self, limit: int, offset: int, token: str, place_id: Union[int, None] = None,
@@ -202,7 +202,7 @@ class MockPlacesRequester(PlacesRequester, MockRequesterMixin):
         """
         Получение списка мест
         """
-        resp, dictt = self._mock_token_handler(token)
+        resp, dictt = self._mock_token_handler(token, list_object=True)
         return resp, [dictt]
 
     def get_places_paginated(self, user_id: int, limit: int, offset: int, token: str, with_deleted: bool = False,

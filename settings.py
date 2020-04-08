@@ -13,3 +13,4 @@ ENV_FILE_NAME = __PROD_ENV_FILE_NAME if settings.DEBUG else __DEV_ENV_FILE_NAME
 ENV = dotenv.main.dotenv_values(ENV_FILE_NAME)
 
 ALLOW_REQUESTS = not settings.DEBUG
+ALLOW_REQUESTS_TEST = False

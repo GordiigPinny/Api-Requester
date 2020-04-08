@@ -1,5 +1,4 @@
 import requests
-from enum import Enum
 from typing import Tuple
 from django.conf import settings
 from ..BaseApiRequester import BaseApiRequester
@@ -59,37 +58,3 @@ class AuthRequester(BaseApiRequester):
         """
         response = self.post('api-token-verify/', data={'token': token})
         return response, self._validate_return_code(response, 200, throw=False)
-
-
-class MockAuthRequester(AuthRequester):
-    """
-    Мок-класс для тестов
-    """
-    class USER_ROLES(Enum):
-        """
-        Класс-енум для ролей юзера (токен, который передается и является ролью)
-        """
-        USER = 'user'
-        MODERATOR = 'moderator'
-        SUPERUSER = 'superuser'
-
-        @classmethod
-        def get_all_tuple(cls):
-            return cls.USER, cls.MODERATOR, cls.SUPERUSER
-
-    def get_user_info(self, token: str) -> Tuple[requests.Response, dict]:
-        return requests.Response(), {
-            'username': 'username',
-            'email': '',
-            'is_moderator': token in (self.USER_ROLES.MODERATOR.value, self.USER_ROLES.SUPERUSER.value),
-            'is_superuser': token == self.USER_ROLES.SUPERUSER.value
-        }
-
-    def is_moderator(self, token: str) -> Tuple[requests.Response, bool]:
-        return requests.Response(), token in (self.USER_ROLES.MODERATOR, self.USER_ROLES.SUPERUSER)
-
-    def is_superuser(self, token: str) -> Tuple[requests.Response, bool]:
-        return requests.Response(), token == self.USER_ROLES.SUPERUSER
-
-    def is_token_valid(self, token: str) -> Tuple[requests.Response, bool]:
-        return requests.Response(), token in self.USER_ROLES.get_all_tuple()

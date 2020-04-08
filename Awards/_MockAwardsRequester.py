@@ -85,7 +85,7 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
         """
         Создание ачивки
         """
-        return self._mock_token_handler(token)
+        return self._mock_token_handler(token, created_object=True)
 
     def change_achievement(self, achievement_id: int, token: str, name: Union[str, None] = None,
                            descr: Union[str, None] = None, pic_link: Union[str, None] = None) -> \
@@ -130,7 +130,7 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
         """
         Создание пина
         """
-        return self._mock_token_handler(token)
+        return self._mock_token_handler(token, created_object=True)
 
     def change_pin(self, pin_id: int, token: str, name: Union[str, None] = None, price: Union[int, None] = None,
                    descr: Union[str, None] = None, pic_link: Union[str, None] = None) -> \

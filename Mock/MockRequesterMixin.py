@@ -97,9 +97,12 @@ class MockRequesterMixin:
         elif token == self.ERRORS.BAD_CODE_404_TOKEN.value:
             self.raise_coded_error(404)
 
-    def _mock_token_handler(self, token: str):
+    def _mock_token_handler(self, token: str, created_object=False):
         """
         Базовый метод обработки моковых токенов
         """
         self._handle_errors(token)
-        return requests.Response(), self.get_object_on_success()
+        if created_object:
+            return requests.Response(), self.get_create_object_on_success(token)
+        else:
+            return requests.Response(), self.get_object_on_success(token)

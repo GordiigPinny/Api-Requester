@@ -83,6 +83,14 @@ class MockRequesterMixin:
             resp = requests.Response()
             resp.status_code = 400
             raise UnexpectedResponse(resp)
+        elif token == self.ERRORS.BAD_CODE_401_TOKEN.value:
+            resp = requests.Response()
+            resp.status_code = 401
+            raise UnexpectedResponse(resp)
+        elif token == self.ERRORS.BAD_CODE_403_TOKEN.value:
+            resp = requests.Response()
+            resp.status_code = 403
+            raise UnexpectedResponse(resp)
         elif token == self.ERRORS.BAD_CODE_404_TOKEN.value:
             resp = requests.Response()
             resp.status_code = 404

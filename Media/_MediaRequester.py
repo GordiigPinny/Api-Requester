@@ -43,7 +43,7 @@ class MediaRequester(BaseApiRequester):
         """
         headers = self._create_auth_header_dict(token)
         headers['Content-Disposition'] = f'attachment; filename={filename}'
-        data = {'object_type': object_type, 'object_id': object_id, 'created_by': created_by}
+        data = {'object_type': object_type.value, 'object_id': object_id, 'created_by': created_by}
         files = {'image': file_data}
         try:
             response = requests.post(url=self.host + '/api/' + self.images_suffix, data=data, files=files,

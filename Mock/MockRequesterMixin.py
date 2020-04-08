@@ -12,6 +12,8 @@ class MockRequesterMixin:
     class ERRORS(Enum):
         ERROR_TOKEN = 'error'
         BAD_CODE_400_TOKEN = 'badcode400'
+        BAD_CODE_401_TOKEN = 'badcode401'
+        BAD_CODE_403_TOKEN = 'badcode403'
         BAD_CODE_404_TOKEN = 'badcode404'
 
     class ROLES(Enum):

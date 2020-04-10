@@ -1,54 +1,21 @@
-from rest_framework.permissions import BasePermission
-from .AuthRequester import AuthRequester
-from ..utils import get_token_from_request
-from ..exceptions import BaseApiRequestError
+from django.conf import settings
+from ._permissions import IsAuthenticated as __I, IsModerator as __M, IsSuperuser as __S
+from ._mock_permissions import IsAuthenticated as __mI, IsModerator as __mM, IsSuperuser as __mS
 
 
-class _BaseAuthPermission(BasePermission):
-    """
-    Базовый класс для всех пермишнов в этом файле
-    """
-    def _get_token_from_request(self, request):
-        return get_token_from_request(request)
-
-
-class IsAuthenticated(_BaseAuthPermission):
-    """
-    Пермишн на то, зарегестрирован ли вообще пользователь
-    """
-    def has_permission(self, request, view):
-        try:
-            token = self._get_token_from_request(request)
-            if token is None:
-                return False
-            return AuthRequester().is_token_valid(token)[1]
-        except BaseApiRequestError:
-            return False
-
-
-class IsModerator(_BaseAuthPermission):
-    """
-    Пермишн на то, является ли юзер модератором
-    """
-    def has_permission(self, request, view):
-        try:
-            token = self._get_token_from_request(request)
-            if token is None:
-                return False
-            return AuthRequester().is_moderator(token)[1]
-        except BaseApiRequestError:
-            return False
-
-
-class IsSuperuser(_BaseAuthPermission):
-    """
-    Пермишн на то, является ли юзер суперюзером
-    """
-    def has_permission(self, request, view):
-        try:
-            token = self._get_token_from_request(request)
-            if token is None:
-                return False
-            return AuthRequester().is_superuser(token)[1]
-        except BaseApiRequestError:
-            return False
+__tst = settings.TESTING
+try:
+    if __tst:
+        __art = settings.ALLOW_REQUESTS_TEST
+        IsAuthenticated = __I if __art else __mI
+        IsModerator = __M if __art else __mM
+        IsSuperuser = __S if __art else __mS
+    else:
+        __ar = settings.ALLOW_REQUESTS
+        IsAuthenticated = __I if __ar else __mI
+        IsModerator = __M if __ar else __mM
+        IsSuperuser = __S if __ar else __mS
+except AttributeError:
+    IsAuthenticated = __I if __tst else __mI
+    IsModerator = __M if __tst else __mM
+    IsSuperuser = __S if __tst else __mS

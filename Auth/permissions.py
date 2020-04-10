@@ -1,5 +1,6 @@
 from rest_framework.permissions import BasePermission
 from .AuthRequester import AuthRequester
+from ..utils import get_token_from_request
 
 
 class _BaseAuthPermission(BasePermission):
@@ -7,10 +8,7 @@ class _BaseAuthPermission(BasePermission):
     Базовый класс для всех пермишнов в этом файле
     """
     def _get_token_from_request(self, request):
-        try:
-            return request.META['HTTP_AUTHORIZATION'][7:]
-        except (KeyError, IndexError):
-            return None
+        return get_token_from_request(request)
 
 
 class IsAuthenticated(_BaseAuthPermission):

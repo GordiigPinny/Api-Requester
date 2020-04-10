@@ -17,7 +17,8 @@ class IsAuthenticated(_BaseAuthPermission):
     Пермишн на то, зарегестрирован ли вообще пользователь
     """
     def has_permission(self, request, view):
-        return self._get_token_from_request(request)['authenticate']
+        is_anon = self._get_token_from_request(request)['role'] == 'anon'
+        return self._get_token_from_request(request)['authenticate'] and not is_anon
 
 
 class IsModerator(_BaseAuthPermission):

@@ -42,19 +42,19 @@ class AwardsRequester(BaseApiRequester):
         return self._base_get(token=token, path_suffix=f'{self.achievement_suffix}{achievement_id}/', params=params)
 
     def create_achievement(self, name: str, token: str, descr: Union[str, None] = None,
-                           pic_link: [str, None] = None) -> Tuple[requests.Response, Dict[str, Any]]:
+                           pic_id: [int, None] = None) -> Tuple[requests.Response, Dict[str, Any]]:
         """
         Создание ачивки
         """
         data = {'name': name}
         if descr:
             data['descr'] = descr
-        if pic_link:
-            data['pic_link'] = pic_link
+        if pic_id:
+            data['pic_id'] = pic_id
         return self._base_post(token=token, path_suffix=self.achievement_suffix, data=data)
 
     def change_achievement(self, achievement_id: int, token: str, name: Union[str, None] = None,
-                           descr: Union[str, None] = None, pic_link: Union[str, None] = None) -> \
+                           descr: Union[str, None] = None, pic_id: Union[int, None] = None) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Изменение ачивки
@@ -64,8 +64,8 @@ class AwardsRequester(BaseApiRequester):
             data['name'] = name
         if descr:
             data['descr'] = descr
-        if pic_link:
-            data['pic_link'] = pic_link
+        if pic_id:
+            data['pic_id'] = pic_id
         return self._base_patch(path_suffix=f'{self.achievement_suffix}{achievement_id}/', token=token, data=data)
 
     def delete_achievement(self, achievement_id: int, token: str) -> requests.Response:
@@ -108,19 +108,19 @@ class AwardsRequester(BaseApiRequester):
         return self._base_get(path_suffix=f'{self.pins_suffix}{pin_id}/', token=token, params=params)
 
     def create_pin(self, name: str, ptype: PIN_TYPE, price: int, token: str, descr: Union[str, None] = None,
-                   pic_link: Union[str, None] = None) -> Tuple[requests.Response, Dict[str, Any]]:
+                   pic_id: Union[int, None] = None) -> Tuple[requests.Response, Dict[str, Any]]:
         """
         Создание пина
         """
         data = {'name': name, 'ptype': ptype.value, 'price': price}
         if descr:
             data['descr'] = descr
-        if pic_link:
-            data['pic_link'] = pic_link
+        if pic_id:
+            data['pic_id'] = pic_id
         return self._base_post(path_suffix=self.pins_suffix, token=token, data=data)
 
     def change_pin(self, pin_id: int, token: str, name: Union[str, None] = None, price: Union[int, None] = None,
-                   descr: Union[str, None] = None, pic_link: Union[str, None] = None) -> \
+                   descr: Union[str, None] = None, pic_id: Union[int, None] = None) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Изменение пина
@@ -132,8 +132,8 @@ class AwardsRequester(BaseApiRequester):
             data['price'] = price
         if descr:
             data['descr'] = descr
-        if pic_link:
-            data['pic_link'] = pic_link
+        if pic_id:
+            data['pic_id'] = pic_id
         return self._base_patch(path_suffix=f'{self.pins_suffix}{pin_id}/', token=token, data=data)
 
     def delete_pin(self, pin_id: int, token: str) -> requests.Response:

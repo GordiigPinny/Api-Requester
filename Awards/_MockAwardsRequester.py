@@ -19,7 +19,7 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
                 'id': 1,
                 'name': 'pin',
                 'descr': 'descr',
-                'pin_pic_link': 'http://example.com',
+                'pic_id': 'http://example.com',
                 'price': 10,
                 'ptype': 'upin',
                 'created_dt': '2020-03-03T12:12:12Z',
@@ -30,7 +30,7 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
                 'id': 1,
                 'name': 'ach',
                 'descr': 'descr',
-                'pic_link': 'http://example.com/',
+                'pic_id': 'http://example.com/',
                 'deleted_flg': False,
                 'created_dt': '2020-03-03T12:12:12Z',
             }
@@ -43,7 +43,7 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
             return {
                 'id': 1,
                 'name': 'pin',
-                'pin_pic_link': 'http://example.com',
+                'pic_id': 1,
                 'price': 10,
                 'ptype': 'upin',
                 'deleted_flg': False,
@@ -52,7 +52,7 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
             return {
                 'id': 1,
                 'name': 'ach',
-                'pic_link': 'http://example.com/',
+                'pic_id': 1,
                 'deleted_flg': False,
             }
         else:
@@ -81,14 +81,14 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
         return self._mock_token_handler(token)
 
     def create_achievement(self, name: str, token: str, descr: Union[str, None] = None,
-                           pic_link: [str, None] = None) -> Tuple[requests.Response, Dict[str, Any]]:
+                           pic_id: [int, None] = None) -> Tuple[requests.Response, Dict[str, Any]]:
         """
         Создание ачивки
         """
         return self._mock_token_handler(token, list_object=True)
 
     def change_achievement(self, achievement_id: int, token: str, name: Union[str, None] = None,
-                           descr: Union[str, None] = None, pic_link: Union[str, None] = None) -> \
+                           descr: Union[str, None] = None, pic_id: Union[int, None] = None) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Изменение ачивки
@@ -125,7 +125,7 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
         return self._mock_token_handler(token)
 
     def create_pin(self, name: str, ptype: AwardsRequester.PIN_TYPE, price: int, token: str,
-                   descr: Union[str, None] = None, pic_link: Union[str, None] = None) -> \
+                   descr: Union[str, None] = None, pic_id: Union[int, None] = None) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Создание пина
@@ -133,7 +133,7 @@ class MockAwardsRequester(AwardsRequester, MockRequesterMixin):
         return self._mock_token_handler(token, list_object=True)
 
     def change_pin(self, pin_id: int, token: str, name: Union[str, None] = None, price: Union[int, None] = None,
-                   descr: Union[str, None] = None, pic_link: Union[str, None] = None) -> \
+                   descr: Union[str, None] = None, pic_id: Union[int, None] = None) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Изменение пина

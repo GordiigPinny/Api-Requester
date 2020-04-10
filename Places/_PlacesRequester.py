@@ -50,20 +50,20 @@ class PlacesRequester(BaseApiRequester):
         params = {self.deleted_qparam: with_deleted}
         return self._base_get(token=token, path_suffix=f'{self.place_images_suffix}{place_image_id}/', params=params)
 
-    def create_place_image(self, place_id: int, created_by: int, pic_link: str, token: str) -> \
+    def create_place_image(self, place_id: int, created_by: int, pic_id: int, token: str) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Создание изображения места
         """
-        data = {'place_id': place_id, 'created_by': created_by, 'pic_link': pic_link}
+        data = {'place_id': place_id, 'created_by': created_by, 'pic_id': pic_id}
         return self._base_post(token=token, path_suffix=self.place_images_suffix, data=data)
 
-    def change_place_image(self, place_image_id: int, place_id: int, created_by: int, pic_link: str, token: str) -> \
+    def change_place_image(self, place_image_id: int, place_id: int, created_by: int, pic_id: int, token: str) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Изменение изображения места
         """
-        data = {'place_id': place_id, 'created_by': created_by, 'pic_link': pic_link}
+        data = {'place_id': place_id, 'created_by': created_by, 'pic_id': pic_id}
         return self._base_patch(token=token, path_suffix=f'{self.place_images_suffix}{place_image_id}/', data=data)
 
     def delete_place_image(self, place_image_id: int, token: str) -> requests.Response:

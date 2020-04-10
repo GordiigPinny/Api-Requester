@@ -54,7 +54,7 @@ class MockPlacesRequester(PlacesRequester, MockRequesterMixin):
                 'id': 1,
                 'created_by': 1,
                 'place_id': 1,
-                'pic_link': 'http://example.com/',
+                'pic_id': 1,
                 'created_dt': '2012-03-03T12:12:12Z',
                 'deleted_flg': False,
             }
@@ -103,14 +103,14 @@ class MockPlacesRequester(PlacesRequester, MockRequesterMixin):
         """
         return self._mock_token_handler(token)
 
-    def create_place_image(self, place_id: int, created_by: int, pic_link: str, token: str) -> \
+    def create_place_image(self, place_id: int, created_by: int, pic_id: int, token: str) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Создание изображения места
         """
         return self._mock_token_handler(token, list_object=True)
 
-    def change_place_image(self, place_image_id: int, place_id: int, created_by: int, pic_link: str, token: str) -> \
+    def change_place_image(self, place_image_id: int, place_id: int, created_by: int, pic_id: int, token: str) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Изменение изображения места

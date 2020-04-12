@@ -1,11 +1,12 @@
 import timeit
+from django.conf import settings
 from .mixins import CollectStatsMixin
 from ..Auth.AuthRequester import AuthRequester
 from ..utils import get_token_from_request
 from ..exceptions import BaseApiRequestError
 
 
-def collect_request_stats_decorator(app_id, app_secret, another_stats_funcs=[]):
+def collect_request_stats_decorator(app_id=settings.APP_ID, app_secret=settings.APP_SECRET, another_stats_funcs=[]):
     def decorator(func):
         def wrappe(self: CollectStatsMixin, request, *args, **kwargs):
             try:

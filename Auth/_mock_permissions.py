@@ -43,7 +43,7 @@ class IsAppTokenCorrect(_BaseAuthPermission):
     """
     Пермишн на то, что токен приложения валиден
     """
-    def has_permissions(self, request, view):
+    def has_permission(self, request, view):
         token = self._get_token_from_request(request)
         return token['authenticate'] and \
             token[MockRequesterMixin.ERRORS_KEYS.APP_AUTH.value] not in [x.value for x in MockRequesterMixin.ERRORS]

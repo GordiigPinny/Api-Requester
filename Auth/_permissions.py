@@ -58,7 +58,7 @@ class IsAppTokenCorrect(_BaseAuthPermission):
     """
     Пермишн на то, что токен приложения валиден
     """
-    def has_permissions(self, request, view):
+    def has_permission(self, request, view):
         try:
             token = self._get_token_from_request(request)
             if token is None:

@@ -28,6 +28,7 @@ def collect_request_stats_decorator(app_id=settings.APP_ID, app_secret=settings.
                                        request=request, response=response)
 
             for stat_func, func_kwargs in zip(another_stats_funcs, self.additional_kwargs_for_stats_funcs):
+                func_kwargs['app_token'] = token
                 stat_func(self, **func_kwargs)
             return response
         return wrappe

@@ -52,3 +52,17 @@ class IsSuperuser(_BaseAuthPermission):
             return AuthRequester().is_superuser(token)[1]
         except BaseApiRequestError:
             return False
+
+
+class IsAppTokenCorrect(_BaseAuthPermission):
+    """
+    Пермишн на то, что токен приложения валиден
+    """
+    def has_permissions(self, request, view):
+        try:
+            token = self._get_token_from_request(request)
+            if token is None:
+                return False
+            return AuthRequester().app_verify_token(token)[1]
+        except BaseApiRequestError:
+            return False

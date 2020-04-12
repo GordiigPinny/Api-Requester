@@ -1,7 +1,7 @@
 import json
 from rest_framework.permissions import BasePermission
 from ..utils import get_token_from_request
-from ..exceptions import BaseApiRequestError
+from ..Mock.MockRequesterMixin import MockRequesterMixin
 
 
 class _BaseAuthPermission(BasePermission):
@@ -37,3 +37,14 @@ class IsSuperuser(_BaseAuthPermission):
     def has_permission(self, request, view):
         token = self._get_token_from_request(request)
         return token['authenticate'] and token['role'] in ('moderator', 'superuser')
+
+
+class IsAppTokenCorrect(_BaseAuthPermission):
+    """
+    Пермишн на то, что токен приложения валиден
+    """
+    def has_permissions(self, request, view):
+        token = self._get_token_from_request(request)
+        return token['authenticate'] and \
+            token[MockRequesterMixin.ERRORS_KEYS.APP_AUTH.value] not in \
+            [MockRequesterMixin.ERRORS.BAD_CODE_401_TOKEN.value, MockRequesterMixin.ERRORS.BAD_CODE_403_TOKEN.value]

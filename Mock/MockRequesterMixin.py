@@ -18,6 +18,7 @@ class MockRequesterMixin:
 
     class ERRORS_KEYS(Enum):
         AUTH = 'auth_error'
+        APP_AUTH = 'app_auth_error'
         USERS = 'users_error'
         AWARDS = 'awards_error'
         PLACES = 'places_error'
@@ -52,6 +53,9 @@ class MockRequesterMixin:
 
     def get_auth_error_part(self, token: str) -> str:
         return self.get_token_dict(token)[self.ERRORS_KEYS.AUTH.value]
+
+    def get_app_auth_error_part(self, token: str) -> str:
+        return self.get_token_dict(token)[self.ERRORS_KEYS.APP_AUTH.value]
 
     def get_awards_error_part(self, token: str) -> str:
         return self.get_token_dict(token)[self.ERRORS_KEYS.AWARDS.value]

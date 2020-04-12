@@ -10,7 +10,7 @@ def collect_request_stats_decorator(app_id=settings.APP_ID, app_secret=settings.
     def decorator(func):
         def wrappe(self: CollectStatsMixin, request, *args, **kwargs):
             try:
-                app_tokens = AuthRequester().app_get_token(app_id, app_secret, token=get_token_from_request(request))
+                _, app_tokens = AuthRequester().app_get_token(app_id, app_secret, token=get_token_from_request(request))
             except BaseApiRequestError:
                 return func(self, request, *args, **kwargs)
             start_time = timeit.default_timer()

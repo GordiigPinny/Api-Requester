@@ -12,11 +12,17 @@ class CollectStatsMixin:
     """
     r = StatsRequester()
 
+    def __init__(self):
+        self.additional_kwargs_for_stats_funcs = []
+
     def __get_auth_json(self, request: Request):
         try:
             return AuthRequester().get_user_info(get_token_from_request(request))[1]
         except BaseApiRequestError:
             return None
+
+    def set_additional_kwargs_for_stats(self, kwargs: list):
+        self.additional_kwargs_for_stats_funcs = kwargs
 
     def collect_request_stats(self, app_token: str, process_time: float, endpoint: str, request: Request,
                               response: Response):

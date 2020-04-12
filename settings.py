@@ -5,8 +5,8 @@ from django.conf import settings
 
 TESTING = sys.argv[1:2] == ['test']
 
-__DEV_ENV_FILE_NAME = 'dev.env'
-__PROD_ENV_FILE_NAME = 'prod.env'
+__DEV_ENV_FILE_NAME = 'ApiRequesters/dev.env'
+__PROD_ENV_FILE_NAME = 'ApiRequesters/prod.env'
 
 ENV_FILE_NAME = __PROD_ENV_FILE_NAME if settings.DEBUG else __DEV_ENV_FILE_NAME
 

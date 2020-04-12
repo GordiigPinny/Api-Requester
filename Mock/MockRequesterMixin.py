@@ -16,6 +16,14 @@ class MockRequesterMixin:
         BAD_CODE_403_TOKEN = 'badcode403'
         BAD_CODE_404_TOKEN = 'badcode404'
 
+    class ERRORS_KEYS(Enum):
+        AUTH = 'auth_error'
+        USERS = 'users_error'
+        AWARDS = 'awards_error'
+        PLACES = 'places_error'
+        STATS = 'stats_error'
+        MEDIA = 'media_error'
+
     class ROLES(Enum):
         ANON = 'anon'
         USER = 'user'
@@ -43,22 +51,22 @@ class MockRequesterMixin:
         return self.get_token_dict(token)['role']
 
     def get_auth_error_part(self, token: str) -> str:
-        return self.get_token_dict(token)['auth_error']
+        return self.get_token_dict(token)[self.ERRORS_KEYS.AUTH.value]
 
     def get_awards_error_part(self, token: str) -> str:
-        return self.get_token_dict(token)['awards_error']
+        return self.get_token_dict(token)[self.ERRORS_KEYS.AWARDS.value]
 
     def get_places_error_part(self, token: str) -> str:
-        return self.get_token_dict(token)['places_error']
+        return self.get_token_dict(token)[self.ERRORS_KEYS.PLACES.value]
 
     def get_users_error_part(self, token: str) -> str:
-        return self.get_token_dict(token)['users_error']
+        return self.get_token_dict(token)[self.ERRORS_KEYS.USERS.value]
 
     def get_stats_error_part(self, token: str) -> str:
-        return self.get_token_dict(token)['stats_error']
+        return self.get_token_dict(token)[self.ERRORS_KEYS.STATS.value]
 
     def get_media_error_part(self, token: str) -> str:
-        return self.get_token_dict(token)['media_error']
+        return self.get_token_dict(token)[self.ERRORS_KEYS.MEDIA.value]
 
     # Этот метод оверрайдить во всех классах-моках для выборки нужной ошибки из токена
     def get_mine_error_part(self, token):

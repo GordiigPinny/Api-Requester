@@ -40,12 +40,12 @@ class UsersRequester(BaseApiRequester):
         """
         return self._base_get(path_suffix=f'profiles/{user_id}/', token=token, params=dict())
 
-    def create_user(self, user_id: int, token: str, profile_pic_link: Union[str, None] = None) -> \
+    def create_user(self, user_id: int, token: str, pic_id: Union[int, None] = None) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Создание нового юзера
         """
-        data = {'user_id': user_id, 'profile_pic_link': profile_pic_link}
+        data = {'user_id': user_id, 'pic_id': pic_id}
         return self._base_post(path_suffix='profiles/', token=token, data=data)
 
     def add_award_to_user(self, user_id: str, award_type: AWARD_TYPE, award_ids: List[int], token: str) -> \
@@ -57,12 +57,12 @@ class UsersRequester(BaseApiRequester):
         return self._base_post(path_suffix=f'profiles/{user_id}/add_awards/', token=token, data=data)
 
     def change_user(self, user_id: int, token: str, pin_sprite: Union[int, None] = None,
-                    geopin_sprite: Union[int, None] = None, profile_pic_link: Union[str, None] = None) -> \
+                    geopin_sprite: Union[int, None] = None, pic_id: Union[int, None] = None) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Изменение юзера
         """
-        data = {'profile_pic_link': profile_pic_link}
+        data = {'pic_id': pic_id}
         if geopin_sprite:
             data['geopin_sprite'] = geopin_sprite
         if pin_sprite:

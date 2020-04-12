@@ -22,7 +22,7 @@ class MockUsersRequester(UsersRequester, MockRequesterMixin):
             'unlocked_pins': [1],
             'unlocked_geopins': [1],
             'achievements': [1],
-            'profile_pic_link': 'http://example.com/',
+            'pic_id': 1,
             'created_dt': '2012-03-03T12:12:12Z',
         }
 
@@ -30,7 +30,7 @@ class MockUsersRequester(UsersRequester, MockRequesterMixin):
         return {
             'id': 1,
             'user_id': 1,
-            'profile_pic_link': 'http://example.com/',
+            'pic_id': 1,
         }
 
     # MARK: - Users requester overrides
@@ -53,7 +53,7 @@ class MockUsersRequester(UsersRequester, MockRequesterMixin):
         """
         return self._mock_token_handler(token)
 
-    def create_user(self, user_id: int, token: str, profile_pic_link: Union[str, None] = None) -> \
+    def create_user(self, user_id: int, token: str, pic_id: Union[int, None] = None) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Создание нового юзера
@@ -68,7 +68,7 @@ class MockUsersRequester(UsersRequester, MockRequesterMixin):
         return self._mock_token_handler(token)
 
     def change_user(self, user_id: int, token: str, pin_sprite: Union[int, None] = None,
-                    geopin_sprite: Union[int, None] = None, profile_pic_link: Union[str, None] = None) -> \
+                    geopin_sprite: Union[int, None] = None, pic_id: Union[int, None] = None) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """
         Изменение юзера

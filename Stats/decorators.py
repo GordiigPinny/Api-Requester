@@ -13,7 +13,8 @@ def collect_request_stats_decorator(app_id=settings.APP_ID, app_secret=settings.
             try:
                 _, app_tokens = AuthRequester().app_get_token(app_id, app_secret, token=get_token_from_request(request))
             except BaseApiRequestError:
-                return func(self, request, *args, **kwargs)
+                resp = func(self, request, *args, **kwargs)
+                return resp[0] if isinstance(resp, tuple) else resp
 
             token = get_token_from_request(request) if settings.TESTING else app_tokens['access']
             if settings.TESTING:

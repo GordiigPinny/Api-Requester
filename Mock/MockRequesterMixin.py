@@ -82,7 +82,7 @@ class MockRequesterMixin:
 
     # Этот оверрайдить, если дсоны на GET/POST отличаются
     def get_list_object_on_success(self, token=None):
-        return self.get_object_on_success()
+        return self.get_object_on_success(token)
 
     def get_coded_response(self, code: int) -> requests.Response:
         resp = requests.Response()

@@ -28,7 +28,7 @@ class CollectStatsMixin:
             return
         try:
             self.r.create_request_statistics(method=request.method, user_id=auth_json['id'], endpoint=endpoint,
-                                             process_time=process_time, status_code=response.status,
+                                             process_time=process_time, status_code=response.status_code,
                                              request_dt=datetime.now(), token=app_token)
         except BaseApiRequestError:
             pass

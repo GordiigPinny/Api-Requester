@@ -1,5 +1,5 @@
 import requests
-from typing import Tuple
+from typing import Tuple, List, Dict, Any
 from django.conf import settings
 from ..BaseApiRequester import BaseApiRequester
 from ..exceptions import JsonDecodeError, UnexpectedResponse, RequestError
@@ -58,3 +58,54 @@ class AuthRequester(BaseApiRequester):
         """
         response = self.post('api-token-verify/', data={'token': token})
         return response, self._validate_return_code(response, 200, throw=False)
+
+    def app_get_list(self, token: str) -> Tuple[requests.Response, List[Dict[str, Any]]]:
+        """
+        Получение списка приложений
+        """
+        return self._base_get(token=token, path_suffix='apps/', params=dict())
+
+    def app_get_concrete(self, app_id: str, token: str) -> Tuple[requests.Response, Dict[str, Any]]:
+        """
+        Получение инфы од одном приложении
+        """
+        return self._base_get(token=token, path_suffix=f'apps/{app_id}/', params=dict())
+
+    def app_get_token(self, app_id: str, app_secret: str, **kwargs) -> Tuple[requests.Response, Dict[str, str]]:
+        """
+        Получение токена приложения
+        """
+        data = {
+            'id': app_id,
+            'secret': app_secret,
+        }
+        response = self.post(path_suffix='app-token-auth/', data=data)
+        self._validate_return_code(response, 200)
+        r_json = self.get_json_from_response(response)
+        return response, r_json
+
+    def app_verify_token(self, token: str) -> Tuple[requests.Response, bool]:
+        """
+        Верификация токена (работает как IsAuthenticated для приложений)
+        """
+        data = {
+            'token': token,
+        }
+        response = self.post(path_suffix='app-token-verify/', data=data)
+        return response, self._validate_return_code(response, 200, throw=False)
+
+    def app_refresh_token(self, token: str) -> Tuple[requests.Response, str]:
+        """
+        Рефреш токена приложения
+        """
+        data = {
+            'refresh': token,
+        }
+        response = self.post(path_suffix='app-token-refresh/', data=data)
+        self._validate_return_code(response, 200)
+        r_json = self.get_json_from_response(response)
+        try:
+            new_token = r_json['access']
+        except KeyError:
+            raise UnexpectedResponse(response, message='В ответе нет поля "access"')
+        return response, new_token

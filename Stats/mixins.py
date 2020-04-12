@@ -14,7 +14,7 @@ class CollectStatsMixin:
 
     def __get_auth_json(self, request: Request):
         try:
-            return AuthRequester().get_user_info(get_token_from_request(request))
+            return AuthRequester().get_user_info(get_token_from_request(request))[1]
         except BaseApiRequestError:
             return None
 

@@ -1,5 +1,5 @@
 from datetime import datetime
-from rest_framework import Request, Response
+from rest_framework.views import Request, Response
 from .StatsRequester import StatsRequester
 from ..Auth.AuthRequester import AuthRequester
 from ..exceptions import BaseApiRequestError

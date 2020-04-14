@@ -2,6 +2,7 @@ import timeit
 from django.conf import settings
 from ..Auth.AuthRequester import AuthRequester
 from ..utils import get_token_from_request
+from ..exceptions import BaseApiRequestError
 from .mixins import CollectStatsMixin
 
 
@@ -11,8 +12,17 @@ def collect_request_stats_decorator(app_id=settings.APP_ID, app_secret=settings.
             try:
                 token = self.app_access_token
             except AttributeError:
-                _, tokens = AuthRequester().app_get_token(app_id, app_secret, token=get_token_from_request(request))
-                token = tokens['access']
+                if settings.TESTING:
+                    token = get_token_from_request(request)
+                else:
+                    try:
+                        _, tokens = AuthRequester().app_get_token(app_id, app_secret,
+                                                                  token=get_token_from_request(request))
+                        token = tokens['access']
+                    except BaseApiRequestError:
+                        resp = func(self, request, *args, **kwargs)
+                        return resp[0] if isinstance(resp, tuple) else resp
+
             start_time = timeit.default_timer()
             response = func(self, request, *args, **kwargs)
             additional_kwargs_for_stats_funcs = []

@@ -1,27 +1,12 @@
-import json
 import timeit
 from django.conf import settings
 from .mixins import CollectStatsMixin
-from ..Auth.AuthRequester import AuthRequester
-from ..utils import get_token_from_request
-from ..exceptions import BaseApiRequestError
 
 
 def collect_request_stats_decorator(app_id=settings.APP_ID, app_secret=settings.APP_SECRET, another_stats_funcs=[]):
     def decorator(func):
         def wrappe(self: CollectStatsMixin, request, *args, **kwargs):
-            try:
-                _, app_tokens = AuthRequester().app_get_token(app_id, app_secret, token=get_token_from_request(request))
-            except BaseApiRequestError:
-                resp = func(self, request, *args, **kwargs)
-                return resp[0] if isinstance(resp, tuple) else resp
-
-            token = get_token_from_request(request) if settings.TESTING else app_tokens['access']
-            if settings.TESTING:
-                token_json = json.loads(token)
-                token_json['stat_type'] = 'request'
-                token = json.dumps(token_json)
-
+            token = self.app_access_token
             start_time = timeit.default_timer()
             response = func(self, request, *args, **kwargs)
             additional_kwargs_for_stats_funcs = []

@@ -1,4 +1,6 @@
+import json
 from datetime import datetime
+from django.conf import settings
 from rest_framework.views import Request, Response
 from .StatsRequester import StatsRequester
 from ..Auth.AuthRequester import AuthRequester
@@ -11,6 +13,9 @@ class CollectStatsMixin:
     Миксина для отправки статистики с помощью StatsRequester
     """
     r = StatsRequester()
+
+    def __init__(self):
+        self.app_access_token = ''
 
     def __get_auth_json(self, request: Request):
         try:
@@ -26,6 +31,10 @@ class CollectStatsMixin:
         auth_json = self.__get_auth_json(request)
         if not auth_json:
             return
+        if settings.TESTING:
+            token_json = json.loads(app_token)
+            token_json['stat_type'] = 'request'
+            app_token = json.dumps(token_json)
         try:
             self.r.create_request_statistics(method=request.method, user_id=auth_json['id'], endpoint=endpoint,
                                              process_time=process_time, status_code=response.status_code,
@@ -40,6 +49,10 @@ class CollectStatsMixin:
         auth_json = self.__get_auth_json(request)
         if not auth_json:
             return
+        if settings.TESTING:
+            token_json = json.loads(app_token)
+            token_json['stat_type'] = 'place'
+            app_token = json.dumps(token_json)
         try:
             self.r.create_place_statistics(action=action, place_id=place_id, user_id=auth_json['id'], token=app_token,
                                            action_dt=datetime.now())
@@ -66,6 +79,10 @@ class CollectStatsMixin:
         auth_json = self.__get_auth_json(request)
         if not auth_json:
             return
+        if settings.TESTING:
+            token_json = json.loads(app_token)
+            token_json['stat_type'] = 'accept'
+            app_token = json.dumps(token_json)
         try:
             self.r.create_accept_statistics(action=action, place_id=place_id, user_id=auth_json['id'],
                                             action_dt=datetime.now(), token=app_token)
@@ -79,6 +96,10 @@ class CollectStatsMixin:
         auth_json = self.__get_auth_json(request)
         if not auth_json:
             return
+        if settings.TESTING:
+            token_json = json.loads(app_token)
+            token_json['stat_type'] = 'pin_purchase'
+            app_token = json.dumps(token_json)
         try:
             self.r.create_pin_purchase_statistics(pin_id=pin_id, user_id=auth_json['id'], purchase_dt=datetime.now(),
                                                   token=app_token)
@@ -92,6 +113,10 @@ class CollectStatsMixin:
         auth_json = self.__get_auth_json(request)
         if not auth_json:
             return
+        if settings.TESTING:
+            token_json = json.loads(app_token)
+            token_json['stat_type'] = 'achievement'
+            app_token = json.dumps(token_json)
         try:
             self.r.create_achievement_statistics(achievement_id=achievement_id, user_id=auth_json['id'],
                                                  achievement_dt=datetime.now(), token=app_token)

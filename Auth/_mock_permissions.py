@@ -45,5 +45,6 @@ class IsAppTokenCorrect(_BaseAuthPermission):
     """
     def has_permission(self, request, view):
         token = self._get_token_from_request(request)
+        view.app_access_token = token
         return token['authenticate'] and \
             token[MockRequesterMixin.ERRORS_KEYS.APP_AUTH.value] not in [x.value for x in MockRequesterMixin.ERRORS]

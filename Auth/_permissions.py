@@ -63,6 +63,7 @@ class IsAppTokenCorrect(_BaseAuthPermission):
             token = self._get_token_from_request(request)
             if token is None:
                 return False
+            view.app_access_token = token
             return AuthRequester().app_verify_token(token)[1]
         except BaseApiRequestError:
             return False

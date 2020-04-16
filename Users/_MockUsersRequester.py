@@ -60,12 +60,26 @@ class MockUsersRequester(UsersRequester, MockRequesterMixin):
         """
         return self._mock_token_handler(token, list_object=True)
 
-    def add_award_to_user(self, user_id: str, award_type: UsersRequester.AWARD_TYPE, award_ids: List[int],
-                          token: str) -> Tuple[requests.Response, Dict[str, Any]]:
+    def add_achievement(self, user_id: str, achievement_id: int, app_token: str) -> \
+            Tuple[requests.Response, Dict[str, Any]]:
         """
         Добавление ачивки юзеру
         """
-        return self._mock_token_handler(token)
+        return self._mock_token_handler(app_token)
+
+    def buy_pin(self, user_id: int, pin_id: int, price: int, app_token: str) -> \
+            Tuple[requests.Response, Dict['str', Any]]:
+        """
+        Покупка пина юзером
+        """
+        return self._mock_token_handler(app_token)
+
+    def change_rating(self, user_id: int, drating: int, app_token: str) -> \
+            Tuple[requests.Response, Dict['str', Any]]:
+        """
+        Изменение рейтинга юзера
+        """
+        return self._mock_token_handler(app_token)
 
     def change_user(self, user_id: int, token: str, pin_sprite: Union[int, None] = None,
                     geopin_sprite: Union[int, None] = None, pic_id: Union[int, None] = None) -> \

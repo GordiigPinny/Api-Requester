@@ -66,6 +66,10 @@ class CollectStatsMixin:
         auth_json = self.__get_auth_json(request)
         if not auth_json:
             return
+        if settings.TESTING:
+            token_json = json.loads(app_token)
+            token_json['stat_type'] = 'rating'
+            app_token = json.dumps(token_json)
         try:
             self.r.create_rating_statistics(old_rating=old_rating, new_rating=new_rating, place_id=place_id,
                                             user_id=auth_json['id'], action_dt=datetime.now().isoformat(),

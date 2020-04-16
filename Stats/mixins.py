@@ -38,7 +38,7 @@ class CollectStatsMixin:
         try:
             self.r.create_request_statistics(method=request.method, user_id=auth_json['id'], endpoint=endpoint,
                                              process_time=process_time, status_code=response.status_code,
-                                             request_dt=datetime.now(), token=app_token)
+                                             request_dt=datetime.now().isoformat(), token=app_token)
         except BaseApiRequestError:
             pass
 
@@ -55,7 +55,7 @@ class CollectStatsMixin:
             app_token = json.dumps(token_json)
         try:
             self.r.create_place_statistics(action=action, place_id=place_id, user_id=auth_json['id'], token=app_token,
-                                           action_dt=datetime.now())
+                                           action_dt=datetime.now().isoformat())
         except BaseApiRequestError:
             pass
 
@@ -68,7 +68,8 @@ class CollectStatsMixin:
             return
         try:
             self.r.create_rating_statistics(old_rating=old_rating, new_rating=new_rating, place_id=place_id,
-                                            user_id=auth_json['id'], action_dt=datetime.now(), token=app_token)
+                                            user_id=auth_json['id'], action_dt=datetime.now().isoformat(),
+                                            token=app_token)
         except BaseApiRequestError:
             pass
 
@@ -85,7 +86,7 @@ class CollectStatsMixin:
             app_token = json.dumps(token_json)
         try:
             self.r.create_accept_statistics(action=action, place_id=place_id, user_id=auth_json['id'],
-                                            action_dt=datetime.now(), token=app_token)
+                                            action_dt=datetime.now().isoformat(), token=app_token)
         except BaseApiRequestError:
             pass
 
@@ -101,8 +102,8 @@ class CollectStatsMixin:
             token_json['stat_type'] = 'pin_purchase'
             app_token = json.dumps(token_json)
         try:
-            self.r.create_pin_purchase_statistics(pin_id=pin_id, user_id=auth_json['id'], purchase_dt=datetime.now(),
-                                                  token=app_token)
+            self.r.create_pin_purchase_statistics(pin_id=pin_id, user_id=auth_json['id'],
+                                                  purchase_dt=datetime.now().isoformat(), token=app_token)
         except BaseApiRequestError:
             pass
 
@@ -119,6 +120,6 @@ class CollectStatsMixin:
             app_token = json.dumps(token_json)
         try:
             self.r.create_achievement_statistics(achievement_id=achievement_id, user_id=auth_json['id'],
-                                                 achievement_dt=datetime.now(), token=app_token)
+                                                 achievement_dt=datetime.now().isoformat(), token=app_token)
         except BaseApiRequestError:
             pass

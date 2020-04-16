@@ -18,10 +18,13 @@ class BaseApiRequester:
         DELETE = 'DELETE'
 
     def __init__(self):
-        self.host = 'http://127.0.0.1:8000/'
-        self.api_url = self.host + '/api/'
+        self.host = 'http://127.0.0.1:8000'
         self.token_prefix = 'Bearer'
         self.deleted_qparam = 'with_deleted'
+
+    @property
+    def api_url(self):
+        return self.host + '/api/'
 
     def _validate_return_code(self, response: requests.Response, expected_code: int, throw: bool = True) -> bool:
         """
@@ -85,6 +88,8 @@ class BaseApiRequester:
             return method(uri, params, json=data, headers=headers)
         except requests.exceptions.RequestException:
             raise RequestError()
+        except Exception as e:
+            raise e
 
     def make_request(self, method: Union[METHODS, str], path_suffix: str, headers: Union[Dict[str, Any], None] = None,
                      data: Union[Dict[str, Any], List[Any], None] = None,
@@ -100,16 +105,16 @@ class BaseApiRequester:
         """
         if isinstance(method, self.METHODS):
             method = method.value
-        if method == self.METHODS.GET:
+        if method == self.METHODS.GET.value:
             return self._make_request(method=requests.get, uri=self.api_url + path_suffix, headers=headers,
                                       params=params, data=data)
-        elif method == self.METHODS.POST:
+        elif method == self.METHODS.POST.value:
             return self._make_request(method=requests.post, uri=self.api_url + path_suffix, headers=headers,
                                       params=params, data=data)
-        elif method == self.METHODS.PATCH:
+        elif method == self.METHODS.PATCH.value:
             return self._make_request(method=requests.patch, uri=self.api_url + path_suffix, headers=headers,
                                       params=params, data=data)
-        elif method == self.METHODS.DELETE:
+        elif method == self.METHODS.DELETE.value:
             return self._make_request(method=requests.delete, uri=self.api_url + path_suffix, headers=headers,
                                       params=params, data=data)
         else:

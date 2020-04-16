@@ -73,7 +73,7 @@ class StatsRequester(BaseApiRequester):
         Добавление статы по реквесту
         """
         data = {
-            'method': method.value,
+            'method': method if isinstance(method, str) else method.value,
             'user_id': user_id,
             'endpoint': endpoint,
             'process_time': process_time,

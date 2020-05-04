@@ -70,7 +70,7 @@ class UsersRequester(BaseApiRequester):
         Изменение рейтинга юзера
         """
         data = {'d_rating': drating}
-        return self._base_post(token=app_token, path_suffix=f'profiles/{user_id}/update_rating/', data=data)
+        return self._base_patch(token=app_token, path_suffix=f'profiles/{user_id}/update_rating/', data=data)
 
     def change_user(self, user_id: int, token: str, pin_sprite: Union[int, None] = None,
                     geopin_sprite: Union[int, None] = None, pic_id: Union[int, None] = None) -> \

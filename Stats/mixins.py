@@ -30,7 +30,7 @@ class CollectStatsMixin:
         """
         auth_json = self.__get_auth_json(request)
         if not auth_json:
-            return
+            auth_json = {'id': None}
         if settings.TESTING:
             token_json = json.loads(app_token)
             token_json['stat_type'] = 'request'
@@ -48,7 +48,10 @@ class CollectStatsMixin:
         """
         auth_json = self.__get_auth_json(request)
         if not auth_json:
-            return
+            if action == self.r.PLACES_ACTIONS.OPENED:
+                auth_json = {'id': None}
+            else:
+                return
         if settings.TESTING:
             token_json = json.loads(app_token)
             token_json['stat_type'] = 'place'

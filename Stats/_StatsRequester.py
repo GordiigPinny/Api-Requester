@@ -66,7 +66,7 @@ class StatsRequester(BaseApiRequester):
         """
         return self._base_get(token=token, path_suffix=f'{self.requests_suffix}{stat_id}/', params=dict())
 
-    def create_request_statistics(self, method: REQUEST_METHODS, user_id: int, endpoint: str, process_time: float,
+    def create_request_statistics(self, method: REQUEST_METHODS, user_id: Optional[int], endpoint: str, process_time: float,
                                   status_code: int, request_dt: Union[str, datetime.datetime], token: str) -> \
             Tuple[requests.Response, Dict[str, Any]]:
         """

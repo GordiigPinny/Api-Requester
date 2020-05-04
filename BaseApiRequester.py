@@ -85,7 +85,9 @@ class BaseApiRequester:
         @return: Ответ внешнего сервиса
         """
         try:
-            return method(uri, params, json=data, headers=headers)
+            return method(uri, params, json=data, headers=headers) \
+                if params is not None \
+                else method(uri, json=data, headers=headers)
         except requests.exceptions.RequestException:
             raise RequestError()
         except Exception as e:

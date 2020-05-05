@@ -26,6 +26,20 @@ class AuthRequester(BaseApiRequester):
         user_json = self.get_json_from_response(response)
         return response, user_json
 
+    def sign_up(self, username: str, password: str, email: str):
+        """
+        Регистрация пользователя
+        """
+        data = {
+            'username': username,
+            'password': password,
+            'email': email,
+        }
+        response = self.post('register/', data=data)
+        self._validate_return_code(response, 201)
+        token_json = self.get_json_from_response(response)
+        return response, token_json
+
     def is_moderator(self, token: str) -> Tuple[requests.Response, bool]:
         """
         Проверка по токену, является ли юзер модератором

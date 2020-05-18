@@ -8,7 +8,11 @@ class StatsRequestsQueue:
     Очередь неудачных запросов (наполняется из PyBreaker)
     """
     def __init__(self):
-        self.r = StrictRedis.from_url(os.getenv('REDIS_URL', 'localhost'))
+        redis_url = os.getenv('REDIS_URL', 'localhost')
+        if redis_url == 'localhost':
+            self.r = StrictRedis(db=1)
+        else:
+            self.r = StrictRedis.from_url(redis_url)
         self.is_collecting = True
 
     def __push(self, data):

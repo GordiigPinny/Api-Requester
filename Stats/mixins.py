@@ -129,4 +129,5 @@ class CollectStatsMixin:
             self.r.create_achievement_statistics(achievement_id=achievement_id, user_id=auth_json['id'],
                                                  achievement_dt=datetime.now().isoformat(), token=app_token)
         except BaseApiRequestError:
+            print('==BASE API REQUEST ERROR==')
             pass

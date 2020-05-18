@@ -1,5 +1,6 @@
 import json
 import os
+import threading
 from redis import StrictRedis, exceptions
 
 
@@ -14,23 +15,27 @@ class StatsRequestsQueue:
         else:
             self.r = StrictRedis.from_url(redis_url)
         self.is_collecting = True
+        self.lock = threading.Lock()
 
     def __push(self, data):
-        try:
-            self.r.lpush('requests', json.dumps(data))
-            self.is_collecting = True
-        except exceptions.RedisError:
-            pass
+        with self.lock:
+            try:
+                self.r.lpush('requests', json.dumps(data))
+                self.is_collecting = True
+            except exceptions.RedisError:
+                pass
 
     def __pop(self):
-        try:
-            json_str = self.r.lpop('requests').decode('utf-8')
-            return json.loads(json_str)
-        except exceptions.RedisError:
-            return {'type': 'None'}
+        with self.lock:
+            try:
+                json_str = self.r.lpop('requests').decode('utf-8')
+                return json.loads(json_str)
+            except exceptions.RedisError:
+                return {'type': 'None'}
 
     def __len__(self):
-        return self.r.llen('requests')
+        with self.lock:
+            return self.r.llen('requests')
 
     def add_requests_stat(self, method, user_id, endpoint, process_time, status_code, request_dt, token):
         data = {
@@ -101,22 +106,23 @@ class StatsRequestsQueue:
 
     def fire(self):
         from .StatsRequester import StatsRequester
-        if not self.is_collecting:
-            return
-        self.is_collecting = False
-        r = StatsRequester()
-        while len(self) > 0 and not self.is_collecting:
-            req_json = self.__pop()
-            req_type = req_json.pop('type')
-            if req_type == 'request':
-                r.create_request_statistics(**req_json)
-            elif req_type == 'place':
-                r.create_place_statistics(**req_json)
-            elif req_type == 'accept':
-                r.create_accept_statistics(**req_json)
-            elif req_type == 'rating':
-                r.create_rating_statistics(**req_json)
-            elif req_type == 'pin_purchase':
-                r.create_pin_purchase_statistics(**req_json)
-            elif req_type == 'achievement':
-                r.create_achievement_statistics(**req_json)
+        with self.lock:
+            if not self.is_collecting:
+                return
+            self.is_collecting = False
+            r = StatsRequester()
+            while len(self) > 0 and not self.is_collecting:
+                req_json = self.__pop()
+                req_type = req_json.pop('type')
+                if req_type == 'request':
+                    r.create_request_statistics(**req_json)
+                elif req_type == 'place':
+                    r.create_place_statistics(**req_json)
+                elif req_type == 'accept':
+                    r.create_accept_statistics(**req_json)
+                elif req_type == 'rating':
+                    r.create_rating_statistics(**req_json)
+                elif req_type == 'pin_purchase':
+                    r.create_pin_purchase_statistics(**req_json)
+                elif req_type == 'achievement':
+                    r.create_achievement_statistics(**req_json)

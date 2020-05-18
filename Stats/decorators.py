@@ -1,4 +1,5 @@
 import timeit
+import threading
 from django.conf import settings
 from ..Auth.AuthRequester import AuthRequester
 from ..utils import get_token_from_request
@@ -31,14 +32,21 @@ def collect_request_stats_decorator(app_id=settings.APP_ID, app_secret=settings.
                 response = response[0]
             process_time = timeit.default_timer() - start_time
             print(f'Process time = {process_time}')
-            self.collect_request_stats(app_token=token, process_time=process_time, endpoint=app_id,
-                                       request=request, response=response)
+            # self.collect_request_stats(app_token=token, process_time=process_time, endpoint=app_id,
+            #                            request=request, response=response)
+            mst = threading.Thread(target=self.collect_request_stats, kwargs={
+                'app_token': token, 'process_time': process_time, 'endpoint': app_id, 'request': request,
+                'response': response,
+            })
+            mst.start()
             print('Main stat sent')
 
             for stat_func, func_kwargs in zip(another_stats_funcs, additional_kwargs_for_stats_funcs):
                 print(f'Sending stats with add_kwargs: {additional_kwargs_for_stats_funcs}')
                 func_kwargs['app_token'] = token
-                stat_func(self, **func_kwargs)
+                tt = threading.Thread(target=stat_func, args=(self, ), kwargs=func_kwargs)
+                tt.start()
+                # stat_func(self, **func_kwargs)
                 print('Done sending prev stats')
             print(f'Returning response with data: {response.data}')
             return response

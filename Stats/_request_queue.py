@@ -1,5 +1,6 @@
 import json
-from redis import Redis, exceptions
+import os
+from redis import StrictRedis, exceptions
 
 
 class StatsRequestsQueue:
@@ -7,7 +8,7 @@ class StatsRequestsQueue:
     Очередь неудачных запросов (наполняется из PyBreaker)
     """
     def __init__(self):
-        self.r = Redis(db=1)
+        self.r = StrictRedis.from_url(os.getenv('REDIS_URL', 'localhost'))
         self.is_collecting = True
 
     def __push(self, data):

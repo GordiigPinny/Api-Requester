@@ -355,14 +355,10 @@ class StatsRequester(BaseApiRequester):
             'achievement_dt': achievement_dt,
         }
         try:
-            print('==POSTING AWARDS STATS==')
             ans = self._base_post(token=token, path_suffix=self.achievement_suffix, data=data)
-            print('==POSTING AWARDS STATS IS OK==')
             self.queue.fire()
-            print('==QUEUE.FIRE() DONE==')
             return ans
         except pybreaker.CircuitBreakerError:
-            print('==CIRCUIT BREAKER ERROR==')
             self.queue.add_achievement_stat(achievement_id, user_id, achievement_dt, token)
             resp = requests.Response()
             resp.status_code = 201

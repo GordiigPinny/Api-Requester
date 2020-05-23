@@ -158,14 +158,16 @@ class PlacesRequester(BaseApiRequester):
         return self._base_delete(token=token, path_suffix=f'{self.accepts_suffix}{acceptance_id}/')
 
     # MARK: - Places
-    def get_places(self, user_id: int, token: str, with_deleted: bool = False, only_mine: Union[bool, None] = None,
+    def get_places(self, token: str, user_id: Union[int, None] = None, with_deleted: bool = False, only_mine: Union[bool, None] = None,
                    lat1: Union[float, None] = None, long1: Union[float, None] = None,
                    lat2: Union[float, None] = None, long2: Union[float, None] = None) -> \
             Tuple[requests.Response, List[Dict[str, Any]]]:
         """
         Получение списка мест
         """
-        params = {self.deleted_qparam: with_deleted, 'user_id': user_id}
+        params = {self.deleted_qparam: with_deleted}
+        if user_id:
+            params['user_id'] = user_id
         if only_mine:
             params['only_mine'] = only_mine
         if lat1:

@@ -195,7 +195,7 @@ class MockPlacesRequester(PlacesRequester, MockRequesterMixin):
         return self._mock_token_handler(token)[0]
 
     # MARK: - Places
-    def get_places(self, user_id: int, token: str, with_deleted: bool = False, only_mine: Union[bool, None] = None,
+    def get_places(self, token: str, user_id: Union[int, None] = None, with_deleted: bool = False, only_mine: Union[bool, None] = None,
                    lat1: Union[float, None] = None, long1: Union[float, None] = None,
                    lat2: Union[float, None] = None, long2: Union[float, None] = None) -> \
             Tuple[requests.Response, List[Dict[str, Any]]]:

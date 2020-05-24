@@ -89,8 +89,10 @@ class BaseApiRequester:
                 if params is not None \
                 else method(uri, json=data, headers=headers)
         except requests.exceptions.RequestException as e:
+            print(f'=== REQUEST ERROR {str(e)} ===')
             raise RequestError()
         except Exception as e:
+            print(f'=== REQUEST EXCEPTION {str(e)} ===')
             raise e
 
     def make_request(self, method: Union[METHODS, str], path_suffix: str, headers: Union[Dict[str, Any], None] = None,

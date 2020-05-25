@@ -15,10 +15,12 @@ class StatsRequestsQueue:
         else:
             self.r = StrictRedis.from_url(redis_url)
         self.is_collecting = True
-        self.lock = threading.Lock()
+        self.lock_mod = threading.Lock()
+        self.lock_len = threading.Lock()
+        self.lock_tmp = threading.Lock()
 
     def __push(self, data):
-        with self.lock:
+        with self.lock_mod:
             try:
                 self.r.lpush('requests', json.dumps(data))
                 self.is_collecting = True
@@ -26,7 +28,7 @@ class StatsRequestsQueue:
                 pass
 
     def __pop(self):
-        with self.lock:
+        with self.lock_mod:
             try:
                 json_str = self.r.lpop('requests').decode('utf-8')
                 return json.loads(json_str)
@@ -34,7 +36,7 @@ class StatsRequestsQueue:
                 return {'type': 'None'}
 
     def __len__(self):
-        with self.lock:
+        with self.lock_len:
             return self.r.llen('requests')
 
     def add_requests_stat(self, method, user_id, endpoint, process_time, status_code, request_dt, token):
@@ -106,13 +108,21 @@ class StatsRequestsQueue:
 
     def fire(self):
         from .StatsRequester import StatsRequester
-        with self.lock:
+        with self.lock_tmp:
             if not self.is_collecting:
                 return
+
+        with self.lock_mod:
+            print('=== Start to fire queue ===')
             self.is_collecting = False
             r = StatsRequester()
             while len(self) > 0 and not self.is_collecting:
-                req_json = self.__pop()
+                print('=== Fire ===')
+                try:
+                    req_json = self.r.lpop('requests').decode('utf-8')
+                    req_json = json.loads(req_json)
+                except exceptions.RedisError:
+                    req_json = {'type': 'None'}
                 req_type = req_json.pop('type')
                 if req_type == 'request':
                     r.create_request_statistics(**req_json)
@@ -126,3 +136,4 @@ class StatsRequestsQueue:
                     r.create_pin_purchase_statistics(**req_json)
                 elif req_type == 'achievement':
                     r.create_achievement_statistics(**req_json)
+            print('=== END FIRING ===')

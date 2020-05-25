@@ -6,11 +6,11 @@ from enum import Enum
 from typing import Tuple, List, Dict, Any, Union, Optional, Callable
 from django.conf import settings
 from ..BaseApiRequester import BaseApiRequester
-from ..exceptions import JsonDecodeError, UnexpectedResponse
+from ..exceptions import JsonDecodeError, UnexpectedResponse, RequestError
 from ._request_queue import StatsRequestsQueue
 
 
-DB_BREAKER = pybreaker.CircuitBreaker(fail_max=5, reset_timeout=60, exclude=[]) # JsonDecodeError])
+DB_BREAKER = pybreaker.CircuitBreaker(fail_max=5, reset_timeout=60, exclude=[])
 
 
 class StatsRequester(BaseApiRequester):
@@ -31,7 +31,10 @@ class StatsRequester(BaseApiRequester):
 
     @DB_BREAKER
     def _make_request(self, method: Callable, uri, headers, params, data) -> requests.Response:
-        return super()._make_request(method, uri, headers, params, data)
+        try:
+            return super()._make_request(method, uri, headers, params, data)
+        except RequestError as e:
+            raise pybreaker.CircuitBreakerError
 
     # MARK: - Request stats
     class REQUEST_METHODS(Enum):

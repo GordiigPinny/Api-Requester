@@ -10,7 +10,7 @@ from ..exceptions import JsonDecodeError, UnexpectedResponse
 from ._request_queue import StatsRequestsQueue
 
 
-DB_BREAKER = pybreaker.CircuitBreaker(fail_max=5, reset_timeout=60, exclude=[JsonDecodeError])
+DB_BREAKER = pybreaker.CircuitBreaker(fail_max=5, reset_timeout=60, exclude=[]) # JsonDecodeError])
 
 
 class StatsRequester(BaseApiRequester):
